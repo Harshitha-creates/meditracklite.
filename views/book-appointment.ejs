@@ -1,0 +1,150 @@
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-calendar-plus me-2"></i>
+                    Book New Appointment
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="/appointments/book">
+                    <div class="mb-3">
+                        <label for="doctorId" class="form-label">
+                            <i class="fas fa-user-md me-1"></i>
+                            Select Doctor
+                        </label>
+                        <select class="form-select" id="doctorId" name="doctorId" required>
+                            <option value="">Choose a doctor...</option>
+                            <% doctors.forEach(doctor => { %>
+                                <option value="<%= doctor.id %>"><%= doctor.name %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="appointmentDate" class="form-label">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    Appointment Date
+                                </label>
+                                <input 
+                                    type="date" 
+                                    class="form-control" 
+                                    id="appointmentDate" 
+                                    name="appointmentDate" 
+                                    required
+                                    min="<%= new Date().toISOString().split('T')[0] %>"
+                                >
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="appointmentTime" class="form-label">
+                                    <i class="fas fa-clock me-1"></i>
+                                    Appointment Time
+                                </label>
+                                <select class="form-select" id="appointmentTime" name="appointmentTime" required>
+                                    <option value="">Select time...</option>
+                                    <option value="09:00">09:00 AM</option>
+                                    <option value="09:30">09:30 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="10:30">10:30 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="11:30">11:30 AM</option>
+                                    <option value="12:00">12:00 PM</option>
+                                    <option value="12:30">12:30 PM</option>
+                                    <option value="13:00">01:00 PM</option>
+                                    <option value="13:30">01:30 PM</option>
+                                    <option value="14:00">02:00 PM</option>
+                                    <option value="14:30">02:30 PM</option>
+                                    <option value="15:00">03:00 PM</option>
+                                    <option value="15:30">03:30 PM</option>
+                                    <option value="16:00">04:00 PM</option>
+                                    <option value="16:30">04:30 PM</option>
+                                </select>
+                                <div class="form-text">
+                                    Available slots: 9:00 AM - 5:00 PM
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="healthConcern" class="form-label">
+                            <i class="fas fa-notes-medical me-1"></i>
+                            Health Concern
+                        </label>
+                        <textarea 
+                            class="form-control" 
+                            id="healthConcern" 
+                            name="healthConcern" 
+                            rows="4" 
+                            required
+                            minlength="10"
+                            maxlength="200"
+                            placeholder="Please describe your health concern or reason for the appointment..."
+                        ></textarea>
+                        <div class="form-text">
+                            <span id="charCount">0</span>/200 characters (minimum 10 required)
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-calendar-plus me-2"></i>
+                            Book Appointment
+                        </button>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+                
+                <div class="text-center">
+                    <a href="/dashboard/patient" class="btn btn-link">
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Information -->
+        <div class="card mt-4 border-info">
+            <div class="card-header bg-info text-white">
+                <h6 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Appointment Booking Information
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>You can book up to 2 appointments per day</li>
+                    <li>Appointment slots are available from 9:00 AM to 5:00 PM</li>
+                    <li>Health concern description must be 10-200 characters</li>
+                    <li>Appointments require doctor acceptance to be confirmed</li>
+                    <li>You will receive status updates as your appointment progresses</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Character count for health concern
+document.getElementById('healthConcern').addEventListener('input', function() {
+    const charCount = this.value.length;
+    document.getElementById('charCount').textContent = charCount;
+    
+    if (charCount < 10) {
+        document.getElementById('charCount').style.color = 'red';
+    } else if (charCount > 180) {
+        document.getElementById('charCount').style.color = 'orange';
+    } else {
+        document.getElementById('charCount').style.color = 'green';
+    }
+});
+</script>

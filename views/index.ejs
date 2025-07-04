@@ -1,0 +1,142 @@
+<div class="hero-section bg-primary text-white text-center py-5 mb-5 rounded">
+    <div class="container">
+        <h1 class="display-4 mb-3">
+            <i class="fas fa-heartbeat me-3"></i>
+            MediTrack Lite
+        </h1>
+        <p class="lead mb-4">Real-Time Clinic Appointment and Prescription Tracker</p>
+        <p class="mb-4">Streamline your medical practice with our comprehensive clinic management system designed for patients and doctors.</p>
+        
+        <% if (!user) { %>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/auth/register" class="btn btn-light btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>
+                    Get Started
+                </a>
+                <a href="/auth/login" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i>
+                    Login
+                </a>
+            </div>
+        <% } else { %>
+            <div class="d-flex justify-content-center gap-3">
+                <% if (user.role === 'Patient') { %>
+                    <a href="/dashboard/patient" class="btn btn-light btn-lg">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Go to Dashboard
+                    </a>
+                    <a href="/appointments/book" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-plus me-2"></i>
+                        Book Appointment
+                    </a>
+                <% } else { %>
+                    <a href="/dashboard/doctor" class="btn btn-light btn-lg">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Go to Dashboard
+                    </a>
+                    <a href="/appointments" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        View Appointments
+                    </a>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <div class="feature-icon bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                    <i class="fas fa-users fa-2x"></i>
+                </div>
+                <h5 class="card-title">Role-Based Access</h5>
+                <p class="card-text">Secure authentication system with separate interfaces for patients and doctors, ensuring proper access control.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <div class="feature-icon bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                    <i class="fas fa-calendar-check fa-2x"></i>
+                </div>
+                <h5 class="card-title">Appointment Management</h5>
+                <p class="card-text">Easy appointment booking for patients and efficient appointment acceptance workflow for doctors.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <div class="feature-icon bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                    <i class="fas fa-prescription-bottle-alt fa-2x"></i>
+                </div>
+                <h5 class="card-title">Prescription Tracking</h5>
+                <p class="card-text">Complete prescription management with detailed medicine information and dosage instructions.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-user-injured text-primary me-2"></i>
+                    For Patients
+                </h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success me-2"></i>Book appointments with preferred doctors</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Track appointment status in real-time</li>
+                    <li><i class="fas fa-check text-success me-2"></i>View prescription details after completion</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Provide feedback and ratings</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Comprehensive appointment history</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-user-md text-primary me-2"></i>
+                    For Doctors
+                </h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success me-2"></i>Accept and manage appointment requests</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Update appointment status through workflow</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Create detailed prescriptions</li>
+                    <li><i class="fas fa-check text-success me-2"></i>View patient feedback and ratings</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Comprehensive patient management dashboard</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% if (!user) { %>
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h4 class="card-title">Ready to Get Started?</h4>
+                <p class="card-text">Join MediTrack Lite today and experience efficient clinic management.</p>
+                <p class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Registration is restricted to @meditrack.local email addresses.
+                </p>
+                <a href="/auth/register" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>
+                    Register Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>

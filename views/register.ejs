@@ -1,0 +1,118 @@
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white text-center">
+                <h4 class="mb-0">
+                    <i class="fas fa-user-plus me-2"></i>
+                    Register for MediTrack Lite
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="/auth/register">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">
+                            <i class="fas fa-user me-1"></i>
+                            Full Name
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="name" 
+                            name="name" 
+                            required
+                            minlength="2"
+                            maxlength="50"
+                            placeholder="Enter your full name"
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope me-1"></i>
+                            Email Address
+                        </label>
+                        <input 
+                            type="email" 
+                            class="form-control" 
+                            id="email" 
+                            name="email" 
+                            required
+                            placeholder="your.name@meditrack.local"
+                        >
+                        <div class="form-text">
+                            Must be a @meditrack.local email address
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock me-1"></i>
+                            Password
+                        </label>
+                        <input 
+                            type="password" 
+                            class="form-control" 
+                            id="password" 
+                            name="password" 
+                            required
+                            minlength="6"
+                            placeholder="Enter your password"
+                        >
+                        <div class="form-text">
+                            Must be at least 6 characters with uppercase, lowercase, and number
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="role" class="form-label">
+                            <i class="fas fa-user-tag me-1"></i>
+                            Role
+                        </label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value="">Select your role</option>
+                            <option value="Patient">Patient</option>
+                            <option value="Doctor">Doctor</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Register
+                        </button>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+                
+                <div class="text-center">
+                    <p class="mb-0">Already have an account?</p>
+                    <a href="/auth/login" class="btn btn-link">
+                        <i class="fas fa-sign-in-alt me-1"></i>
+                        Login here
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Requirements -->
+        <div class="card mt-4 border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h6 class="mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Registration Requirements
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>Email must end with @meditrack.local</li>
+                    <li>Name must be 2-50 characters long</li>
+                    <li>Password must be at least 6 characters</li>
+                    <li>Password must contain uppercase, lowercase, and number</li>
+                    <li>Choose either Patient or Doctor role</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

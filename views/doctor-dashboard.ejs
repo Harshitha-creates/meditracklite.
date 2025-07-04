@@ -1,0 +1,239 @@
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-tachometer-alt text-primary me-2"></i>
+                Doctor Dashboard
+            </h2>
+            <div>
+                <a href="/appointments" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    View All Appointments
+                </a>
+                <a href="/appointments/my-appointments" class="btn btn-primary">
+                    <i class="fas fa-stethoscope me-2"></i>
+                    My Appointments
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Stats -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Pending Requests</h6>
+                        <h3 class="mb-0"><%= pendingCount %></h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Active Appointments</h6>
+                        <h3 class="mb-0"><%= activeAppointments.length %></h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-calendar-check fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Completed</h6>
+                        <h3 class="mb-0"><%= completedAppointments.length %></h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-check-double fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Average Rating</h6>
+                        <h3 class="mb-0">
+                            <% if (averageRating) { %>
+                                <%= averageRating %>
+                                <i class="fas fa-star"></i>
+                            <% } else { %>
+                                N/A
+                            <% } %>
+                        </h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-star fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Active Appointments -->
+<% if (activeAppointments.length > 0) { %>
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-calendar-check text-info me-2"></i>
+            Active Appointments
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Patient</th>
+                        <th>Health Concern</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% activeAppointments.forEach(appointment => { %>
+                        <tr>
+                            <td>
+                                <div>
+                                    <strong><%= appointment.appointmentDate.toLocaleDateString() %></strong>
+                                </div>
+                                <small class="text-muted">
+                                    <%= appointment.appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) %>
+                                </small>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user text-primary me-2"></i>
+                                    <%= appointment.patientName %>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="text-truncate" style="max-width: 200px; display: inline-block;" title="<%= appointment.healthConcern %>">
+                                    <%= appointment.healthConcern %>
+                                </span>
+                            </td>
+                            <td>
+                                <% 
+                                let statusClass = appointment.status === 'Confirmed' ? 'info' : 'primary';
+                                let statusIcon = appointment.status === 'Confirmed' ? 'check-circle' : 'spinner';
+                                %>
+                                <span class="badge bg-<%= statusClass %>">
+                                    <i class="fas fa-<%= statusIcon %> me-1"></i>
+                                    <%= appointment.status %>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="/appointments/details/<%= appointment.id %>" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                        View
+                                    </a>
+                                    
+                                    <% if (appointment.status === 'Confirmed') { %>
+                                        <form method="POST" action="/appointments/update-status/<%= appointment.id %>" class="d-inline">
+                                            <input type="hidden" name="status" value="In Progress">
+                                            <button type="submit" class="btn btn-outline-warning btn-sm">
+                                                <i class="fas fa-play"></i>
+                                                Start
+                                            </button>
+                                        </form>
+                                    <% } else if (appointment.status === 'In Progress') { %>
+                                        <form method="POST" action="/appointments/update-status/<%= appointment.id %>" class="d-inline">
+                                            <input type="hidden" name="status" value="Completed">
+                                            <button type="submit" class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-check"></i>
+                                                Complete
+                                            </button>
+                                        </form>
+                                    <% } %>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<!-- Recent Feedback -->
+<% if (feedbacks.length > 0) { %>
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-comments text-success me-2"></i>
+            Recent Patient Feedback
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <% feedbacks.slice(0, 6).forEach(feedback => { %>
+                <div class="col-md-6 mb-3">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="mb-0"><%= feedback.patientName %></h6>
+                                <div>
+                                    <% for(let i = 1; i <= 5; i++) { %>
+                                        <i class="fas fa-star <%= i <= feedback.rating ? 'text-warning' : 'text-muted' %>"></i>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% if (feedback.comment) { %>
+                                <p class="mb-0 text-muted">
+                                    "<%= feedback.comment %>"
+                                </p>
+                            <% } %>
+                            <small class="text-muted">
+                                <%= feedback.createdAt.toLocaleDateString() %>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        
+        <% if (feedbacks.length > 6) { %>
+            <div class="text-center mt-3">
+                <a href="/appointments/my-appointments" class="btn btn-outline-primary">
+                    View All Feedback
+                </a>
+            </div>
+        <% } %>
+    </div>
+</div>
+<% } else { %>
+<div class="card">
+    <div class="card-body text-center py-5">
+        <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">No feedback received yet</h5>
+        <p class="text-muted">Patient feedback will appear here after completed appointments.</p>
+    </div>
+</div>
+<% } %>

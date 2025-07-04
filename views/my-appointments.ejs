@@ -1,0 +1,167 @@
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-stethoscope text-primary me-2"></i>
+                My Appointments
+            </h2>
+            <a href="/appointments" class="btn btn-outline-primary">
+                <i class="fas fa-calendar-alt me-2"></i>
+                View All Appointments
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <% if (appointments.length === 0) { %>
+            <div class="text-center py-5">
+                <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No appointments found</h5>
+                <p class="text-muted mb-3">You haven't accepted any appointments yet.</p>
+                <a href="/appointments" class="btn btn-primary">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    View Pending Appointments
+                </a>
+            </div>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Patient</th>
+                            <th>Health Concern</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% appointments.forEach(appointment => { %>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <strong><%= appointment.appointmentDate.toLocaleDateString() %></strong>
+                                    </div>
+                                    <small class="text-muted">
+                                        <%= appointment.appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) %>
+                                    </small>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-user text-primary me-2"></i>
+                                        <%= appointment.patientName %>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-truncate" style="max-width: 250px; display: inline-block;" title="<%= appointment.healthConcern %>">
+                                        <%= appointment.healthConcern %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <% 
+                                    let statusClass = 'secondary';
+                                    let statusIcon = 'clock';
+                                    switch(appointment.status) {
+                                        case 'Confirmed':
+                                            statusClass = 'info';
+                                            statusIcon = 'check-circle';
+                                            break;
+                                        case 'In Progress':
+                                            statusClass = 'primary';
+                                            statusIcon = 'spinner';
+                                            break;
+                                        case 'Completed':
+                                            statusClass = 'success';
+                                            statusIcon = 'check-double';
+                                            break;
+                                    }
+                                    %>
+                                    <span class="badge bg-<%= statusClass %>">
+                                        <i class="fas fa-<%= statusIcon %> me-1"></i>
+                                        <%= appointment.status %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="/appointments/details/<%= appointment.id %>" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                            View
+                                        </a>
+                                        
+                                        <% if (appointment.status === 'Confirmed') { %>
+                                            <form method="POST" action="/appointments/update-status/<%= appointment.id %>" class="d-inline">
+                                                <input type="hidden" name="status" value="In Progress">
+                                                <button type="submit" class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-play"></i>
+                                                    Start
+                                                </button>
+                                            </form>
+                                        <% } else if (appointment.status === 'In Progress') { %>
+                                            <form method="POST" action="/appointments/update-status/<%= appointment.id %>" class="d-inline">
+                                                <input type="hidden" name="status" value="Completed">
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check"></i>
+                                                    Complete
+                                                </button>
+                                            </form>
+                                        <% } else if (appointment.status === 'Completed') { %>
+                                            <a href="/prescriptions/create/<%= appointment.id %>" class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-prescription-bottle-alt"></i>
+                                                Prescription
+                                            </a>
+                                        <% } %>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<!-- Status Workflow Information -->
+<div class="card mt-4 border-info">
+    <div class="card-header bg-info text-white">
+        <h6 class="mb-0">
+            <i class="fas fa-info-circle me-2"></i>
+            Appointment Status Workflow
+        </h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3 text-center mb-3">
+                <div class="p-3 border rounded bg-info text-white">
+                    <i class="fas fa-check-circle fa-2x mb-2"></i>
+                    <h6>Confirmed</h6>
+                    <small>Appointment accepted</small>
+                </div>
+            </div>
+            <div class="col-md-1 text-center align-self-center d-none d-md-block">
+                <i class="fas fa-arrow-right fa-2x text-muted"></i>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="p-3 border rounded bg-primary text-white">
+                    <i class="fas fa-spinner fa-2x mb-2"></i>
+                    <h6>In Progress</h6>
+                    <small>Appointment started</small>
+                </div>
+            </div>
+            <div class="col-md-1 text-center align-self-center d-none d-md-block">
+                <i class="fas fa-arrow-right fa-2x text-muted"></i>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="p-3 border rounded bg-success text-white">
+                    <i class="fas fa-check-double fa-2x mb-2"></i>
+                    <h6>Completed</h6>
+                    <small>Add prescription</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

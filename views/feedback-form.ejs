@@ -1,0 +1,287 @@
+
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-star me-2"></i>
+                    Provide Feedback
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <!-- Appointment Summary -->
+                <div class="alert alert-success">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Completed Appointment
+                    </h6>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <strong>Doctor:</strong> <%= appointment.doctorName %><br>
+                            <strong>Date:</strong> <%= appointment.appointmentDate.toLocaleDateString() %>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong>Time:</strong> <%= appointment.appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) %><br>
+                            <strong>Status:</strong> 
+                            <span class="badge bg-success">
+                                <i class="fas fa-check-double me-1"></i>
+                                <%= appointment.status %>
+                            </span>
+                        </div>
+                    </div>
+                    <hr class="my-2">
+                    <div>
+                        <strong>Health Concern:</strong> <%= appointment.healthConcern %>
+                    </div>
+                </div>
+
+                <form method="POST" action="/feedback/create/<%= appointment.id %>" id="feedbackForm">
+                    <div class="mb-4">
+                        <label class="form-label">
+                            <i class="fas fa-star me-1"></i>
+                            Rating <span class="text-danger">*</span>
+                        </label>
+                        <div class="rating-container">
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5" required>
+                                <label for="star5" title="Excellent">
+                                    <i class="fas fa-star"></i>
+                                </label>
+                                
+                                <input type="radio" id="star4" name="rating" value="4" required>
+                                <label for="star4" title="Very Good">
+                                    <i class="fas fa-star"></i>
+                                </label>
+                                
+                                <input type="radio" id="star3" name="rating" value="3" required>
+                                <label for="star3" title="Good">
+                                    <i class="fas fa-star"></i>
+                                </label>
+                                
+                                <input type="radio" id="star2" name="rating" value="2" required>
+                                <label for="star2" title="Fair">
+                                    <i class="fas fa-star"></i>
+                                </label>
+                                
+                                <input type="radio" id="star1" name="rating" value="1" required>
+                                <label for="star1" title="Poor">
+                                    <i class="fas fa-star"></i>
+                                </label>
+                            </div>
+                            <div class="rating-text mt-2">
+                                <span id="ratingText" class="text-muted">Please select a rating</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">
+                            <i class="fas fa-comment me-1"></i>
+                            Additional Comments <span class="text-muted">(Optional)</span>
+                        </label>
+                        <textarea 
+                            class="form-control" 
+                            id="comment" 
+                            name="comment" 
+                            rows="4" 
+                            maxlength="150"
+                            placeholder="Share your experience with this appointment... (optional)"
+                        ></textarea>
+                        <div class="form-text">
+                            <span id="charCount">0</span>/150 characters
+                        </div>
+                    </div>
+
+                    <!-- Feedback Categories -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-tags me-1"></i>
+                            What did you appreciate most? <span class="text-muted">(Optional)</span>
+                        </label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="professionalism">
+                                    <label class="form-check-label" for="professionalism">
+                                        Professionalism
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="communication">
+                                    <label class="form-check-label" for="communication">
+                                        Clear Communication
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="punctuality">
+                                    <label class="form-check-label" for="punctuality">
+                                        Punctuality
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="thoroughness">
+                                    <label class="form-check-label" for="thoroughness">
+                                        Thoroughness
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="empathy">
+                                    <label class="form-check-label" for="empathy">
+                                        Empathy & Care
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="expertise">
+                                    <label class="form-check-label" for="expertise">
+                                        Medical Expertise
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-info btn-lg">
+                            <i class="fas fa-star me-2"></i>
+                            Submit Feedback
+                        </button>
+                        
+                        <a href="/dashboard/patient" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Feedback Information -->
+        <div class="card mt-4 border-info">
+            <div class="card-header bg-info text-white">
+                <h6 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    About Your Feedback
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li>Your feedback helps improve our medical services</li>
+                    <li>Ratings are from 1 (Poor) to 5 (Excellent)</li>
+                    <li>Comments are optional but highly appreciated</li>
+                    <li>You can only submit feedback once per appointment</li>
+                    <li>Your feedback will be shared with the doctor</li>
+                    <li>All feedback is confidential and secure</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Rating Scale Reference -->
+        <div class="card mt-4 border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h6 class="mb-0">
+                    <i class="fas fa-star me-2"></i>
+                    Rating Scale Guide
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between text-center">
+                            <div class="flex-fill">
+                                <div class="text-danger">★</div>
+                                <small>Poor</small>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="text-warning">★★</div>
+                                <small>Fair</small>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="text-warning">★★★</div>
+                                <small>Good</small>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="text-success">★★★★</div>
+                                <small>Very Good</small>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="text-success">★★★★★</div>
+                                <small>Excellent</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Character count for comments
+document.getElementById('comment').addEventListener('input', function() {
+    const charCount = this.value.length;
+    document.getElementById('charCount').textContent = charCount;
+    
+    if (charCount > 130) {
+        document.getElementById('charCount').style.color = 'orange';
+    } else if (charCount > 150) {
+        document.getElementById('charCount').style.color = 'red';
+    } else {
+        document.getElementById('charCount').style.color = 'green';
+    }
+});
+
+// Rating selection handling
+document.querySelectorAll('input[name="rating"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const ratingText = document.getElementById('ratingText');
+        const value = parseInt(this.value);
+        const texts = {
+            1: 'Poor - Needs significant improvement',
+            2: 'Fair - Below expectations',
+            3: 'Good - Met expectations',
+            4: 'Very Good - Exceeded expectations',
+            5: 'Excellent - Outstanding service'
+        };
+        
+        ratingText.textContent = texts[value];
+        ratingText.className = value >= 4 ? 'text-success fw-bold' : 
+                              value === 3 ? 'text-warning fw-bold' : 
+                              'text-danger fw-bold';
+    });
+});
+
+// Enhance comment with selected categories
+document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    const commentField = document.getElementById('comment');
+    
+    if (checkboxes.length > 0) {
+        const categories = Array.from(checkboxes).map(cb => cb.nextElementSibling.textContent.trim());
+        const categoryText = '\n\nAppreciated: ' + categories.join(', ');
+        
+        if (commentField.value.length + categoryText.length <= 150) {
+            commentField.value += categoryText;
+        }
+    }
+});
+
+// Form validation
+document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+    const rating = document.querySelector('input[name="rating"]:checked');
+    
+    if (!rating) {
+        e.preventDefault();
+        alert('Please select a rating before submitting your feedback.');
+        return;
+    }
+    
+    // Confirm submission
+    const confirmSubmit = confirm('Are you sure you want to submit this feedback? You can only submit feedback once per appointment.');
+    if (!confirmSubmit) {
+        e.preventDefault();
+    }
+});
+</script>
